@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_acl_redis).
+-module(emqx_acl_aliyun_iot).
 
 -include("emqx_auth_aliyun_iot.hrl").
 
