@@ -6,7 +6,7 @@ services:
   erlang:
     image: erlang:22.3
     volumes:
-      - ../:/emqx_auth_redis
+      - ../:/emqx_auth_aliyun_iot
     networks:
       - app_net
     depends_on:

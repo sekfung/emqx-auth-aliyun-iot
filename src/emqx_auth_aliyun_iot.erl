@@ -14,9 +14,9 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_auth_redis).
+-module(emqx_auth_aliyun_iot).
 
--include("emqx_auth_redis.hrl").
+-include("emqx_auth_aliyun_iot.hrl").
 
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("emqx/include/logger.hrl").
@@ -37,7 +37,7 @@ check(ClientInfo = #{password := Password}, AuthResult,
         timeout   := Timeout,
         type      := Type,
         pool      := Pool}) ->
-    CheckPass = case emqx_auth_redis_cli:q(Pool, Type, AuthCmd, ClientInfo, Timeout) of
+    CheckPass = case emqx_auth_aliyun_iot_cli:q(Pool, Type, AuthCmd, ClientInfo, Timeout) of
                     {ok, PassHash} when is_binary(PassHash) ->
                         check_pass({PassHash, Password}, HashType);
                     {ok, [undefined|_]} ->
@@ -70,7 +70,7 @@ description() -> "Authentication with Redis".
 -spec(is_superuser(atom(), atom(), undefined|list(), emqx_types:client(), timeout()) -> boolean()).
 is_superuser(_Pool, _Type, undefined, _ClientInfo, _Timeout) -> false;
 is_superuser(Pool, Type, SuperCmd, ClientInfo, Timeout) ->
-    case emqx_auth_redis_cli:q(Pool, Type, SuperCmd, ClientInfo, Timeout) of
+    case emqx_auth_aliyun_iot_cli:q(Pool, Type, SuperCmd, ClientInfo, Timeout) of
         {ok, undefined} -> false;
         {ok, <<"1">>}   -> true;
         {ok, _Other}    -> false;

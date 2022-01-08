@@ -14,11 +14,11 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_auth_redis_sup).
+-module(emqx_auth_aliyun_iot_sup).
 
 -behaviour(supervisor).
 
--include("emqx_auth_redis.hrl").
+-include("emqx_auth_aliyun_iot.hrl").
 
 -export([start_link/0]).
 
@@ -38,6 +38,6 @@ pool_spec(Server) ->
             {ok, _} = eredis_cluster:start_pool(?APP, Server ++ Options),
             [];
         _ ->
-            [ecpool:pool_spec(?APP, ?APP, emqx_auth_redis_cli, Server ++ Options)]
+            [ecpool:pool_spec(?APP, ?APP, emqx_auth_aliyun_iot_cli, Server ++ Options)]
     end.
 

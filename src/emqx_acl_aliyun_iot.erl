@@ -16,7 +16,7 @@
 
 -module(emqx_acl_redis).
 
--include("emqx_auth_redis.hrl").
+-include("emqx_auth_aliyun_iot.hrl").
 
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("emqx/include/logger.hrl").
@@ -41,7 +41,7 @@ do_check_acl(#{username := <<$$, _/binary>>}, _PubSub, _Topic, _AclResult, _Conf
     ok;
 do_check_acl(ClientInfo, PubSub, Topic, _AclResult,
              #{acl_cmd := AclCmd, timeout := Timeout, type := Type, pool := Pool}) ->
-    case emqx_auth_redis_cli:q(Pool, Type, AclCmd, ClientInfo, Timeout) of
+    case emqx_auth_aliyun_iot_cli:q(Pool, Type, AclCmd, ClientInfo, Timeout) of
         {ok, []} -> ok;
         {ok, Rules} ->
             case match(ClientInfo, PubSub, Topic, Rules) of

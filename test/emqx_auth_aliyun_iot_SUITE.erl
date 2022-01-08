@@ -14,7 +14,7 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_auth_redis_SUITE).
+-module(emqx_auth_aliyun_iot_SUITE).
 
 -compile(export_all).
 
@@ -24,7 +24,7 @@
 
 -include_lib("eunit/include/eunit.hrl").
 
--define(APP, emqx_auth_redis).
+-define(APP, emqx_auth_aliyun_iot).
 
 -define(POOL(App), ecpool_worker:client(gproc_pool:pick_worker({ecpool, App}))).
 
@@ -49,13 +49,13 @@ all() ->
     emqx_ct:all(?MODULE).
 
 init_per_suite(Cfg) ->
-    emqx_ct_helpers:start_apps([emqx_auth_redis], fun set_special_configs/1),
+    emqx_ct_helpers:start_apps([emqx_auth_aliyun_iot], fun set_special_configs/1),
     init_redis_rows(),
     Cfg.
 
 end_per_suite(_Cfg) ->
     deinit_redis_rows(),
-    emqx_ct_helpers:stop_apps([emqx_auth_redis]).
+    emqx_ct_helpers:stop_apps([emqx_auth_aliyun_iot]).
 
 set_special_configs(emqx) ->
     application:set_env(emqx, allow_anonymous, false),
@@ -186,5 +186,5 @@ q(Cmd) ->
             {ok, Connection} = ?POOL(?APP),
             eredis:q(Connection, Cmd);
         cluster ->
-            eredis_cluster:q(emqx_auth_redis, Cmd)
+            eredis_cluster:q(emqx_auth_aliyun_iot, Cmd)
     end.

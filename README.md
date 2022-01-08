@@ -1,4 +1,4 @@
-emqx_auth_redis
+emqx_auth_aliyun_iot
 ===============
 
 EMQ X Redis Authentication/ACL Plugin
@@ -23,7 +23,7 @@ make && make tests
 Configure Plugin
 ----------------
 
-File: etc/emqx_auth_redis.conf
+File: etc/emqx_auth_aliyun_iot.conf
 
 ```
 ## Redis server address.
@@ -161,7 +161,7 @@ Load Plugin
 -----------
 
 ```
-./bin/emqx_ctl plugins load emqx_auth_redis
+./bin/emqx_ctl plugins load emqx_auth_aliyun_iot
 ```
 
 Author

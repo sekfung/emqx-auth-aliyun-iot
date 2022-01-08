@@ -1,5 +1,5 @@
 
--define(APP, emqx_auth_redis).
+-define(APP, emqx_auth_aliyun_iot).
 
 -record(auth_metrics, {
         success = 'client.auth.success',

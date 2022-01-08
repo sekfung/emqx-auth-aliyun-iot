@@ -14,11 +14,11 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_auth_redis_cli).
+-module(emqx_auth_aliyun_iot_cli).
 
 -behaviour(ecpool_worker).
 
--include("emqx_auth_redis.hrl").
+-include("emqx_auth_aliyun_iot.hrl").
 
 -include_lib("emqx/include/emqx.hrl").
 -include_lib("emqx/include/logger.hrl").

@@ -1,0 +1,47 @@
+%% -*-: erlang -*-
+{VSN,
+   [
+     {"4.2.3", [
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.2", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.1", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.0", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {<<".*">>, []}
+   ],
+   [
+     {"4.2.3", [
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.2", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.1", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {"4.2.0", [
+                    {load_module, emqx_auth_aliyun_iot_cli, brutal_purge, soft_purge, []},
+                    {load_module, emqx_auth_aliyun_iot_sup, brutal_purge, soft_purge, []}
+               ]
+     },
+     {<<".*">>, []}
+   ]
+}.

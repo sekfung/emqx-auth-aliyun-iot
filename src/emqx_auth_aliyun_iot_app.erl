@@ -14,26 +14,26 @@
 %% limitations under the License.
 %%--------------------------------------------------------------------
 
--module(emqx_auth_redis_app).
+-module(emqx_auth_aliyun_iot_app).
 
 -behaviour(application).
 
 -emqx_plugin(auth).
 
--include("emqx_auth_redis.hrl").
+-include("emqx_auth_aliyun_iot.hrl").
 
 -export([ start/2
         , stop/1
         ]).
 
 start(_StartType, _StartArgs) ->
-    {ok, Sup} = emqx_auth_redis_sup:start_link(),
+    {ok, Sup} = emqx_auth_aliyun_iot_sup:start_link(),
     if_cmd_enabled(auth_cmd, fun load_auth_hook/1),
     if_cmd_enabled(acl_cmd,  fun load_acl_hook/1),
     {ok, Sup}.
 
 stop(_State) ->
-    emqx:unhook('client.authenticate', fun emqx_auth_redis:check/3),
+    emqx:unhook('client.authenticate', fun emqx_auth_aliyun_iot:check/3),
     emqx:unhook('client.check_acl', fun emqx_acl_redis:check_acl/5),
     %% Ensure stop cluster pool if the server type is cluster
     eredis_cluster:stop_pool(?APP).
@@ -49,8 +49,8 @@ load_auth_hook(AuthCmd) ->
                timeout => Timeout,
                type => Type,
                pool => ?APP},
-    ok = emqx_auth_redis:register_metrics(),
-    emqx:hook('client.authenticate', fun emqx_auth_redis:check/3, [Config]).
+    ok = emqx_auth_aliyun_iot:register_metrics(),
+    emqx:hook('client.authenticate', fun emqx_auth_aliyun_iot:check/3, [Config]).
 
 load_acl_hook(AclCmd) ->
     {ok, Timeout} = application:get_env(?APP, query_timeout),

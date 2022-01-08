@@ -4,7 +4,7 @@ services:
   erlang:
     image: erlang:22.3
     volumes:
-      - ../:/emqx_auth_redis
+      - ../:/emqx_auth_aliyun_iot
     networks:
       - emqx_bridge
     depends_on:
@@ -14,7 +14,7 @@ services:
   redis_server:
     image: redis:6.0.9
     volumes:
-      - ../test/emqx_auth_redis_SUITE_data/certs:/tls
+      - ../test/emqx_auth_aliyun_iot_SUITE_data/certs:/tls
     command:
       - redis-server
       - "--bind 0.0.0.0 ::"

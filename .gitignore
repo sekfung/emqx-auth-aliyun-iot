@@ -12,7 +12,7 @@ ebin/
 *.plt
 erl_crash.dump
 data
-emqx_auth_redis.d
+emqx_auth_aliyun_iot.d
 cover/
 eunit.coverdata
 _build/

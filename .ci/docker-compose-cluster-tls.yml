@@ -6,7 +6,7 @@ services:
   erlang:
     image: erlang:22.3
     volumes:
-      - ../:/emqx_auth_redis
+      - ../:/emqx_auth_aliyun_iot
     networks:
       - app_net
     depends_on:
@@ -17,7 +17,7 @@ services:
     image: redis:6.0.9
     container_name: redis-cluster
     volumes:
-      - ../test/emqx_auth_redis_SUITE_data/certs:/tls
+      - ../test/emqx_auth_aliyun_iot_SUITE_data/certs:/tls
       - ./redis/:/data/conf
     command: bash -c "/bin/bash /data/conf/redis.sh -t && while true; do echo 1; sleep 1; done"
     networks:

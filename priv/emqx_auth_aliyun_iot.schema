@@ -1,59 +1,59 @@
 %%-*- mode: erlang -*-
-%% emqx_auth_redis config mapping
+%% emqx_auth_aliyun_iot config mapping
 
-{mapping, "auth.redis.type", "emqx_auth_redis.server", [
+{mapping, "auth.redis.type", "emqx_auth_aliyun_iot.server", [
   {default, single},
   {datatype, {enum, [single, sentinel, cluster]}}
 ]}.
 
-{mapping, "auth.redis.server", "emqx_auth_redis.server", [
+{mapping, "auth.redis.server", "emqx_auth_aliyun_iot.server", [
   {default, "127.0.0.1:6379"},
   {datatype, [string]}
 ]}.
 
-{mapping, "auth.redis.sentinel", "emqx_auth_redis.server", [
+{mapping, "auth.redis.sentinel", "emqx_auth_aliyun_iot.server", [
   {default, ""},
   {datatype, string},
   hidden
 ]}.
 
-{mapping, "auth.redis.pool", "emqx_auth_redis.server", [
+{mapping, "auth.redis.pool", "emqx_auth_aliyun_iot.server", [
   {default, 8},
   {datatype, integer}
 ]}.
 
-{mapping, "auth.redis.database", "emqx_auth_redis.server", [
+{mapping, "auth.redis.database", "emqx_auth_aliyun_iot.server", [
   {default, 0},
   {datatype, integer}
 ]}.
 
-{mapping, "auth.redis.password", "emqx_auth_redis.server", [
+{mapping, "auth.redis.password", "emqx_auth_aliyun_iot.server", [
   {default, ""},
   {datatype, string},
   hidden
 ]}.
 
-{mapping, "auth.redis.ssl", "emqx_auth_redis.options", [
+{mapping, "auth.redis.ssl", "emqx_auth_aliyun_iot.options", [
   {default, off},
   {datatype, flag}
 ]}.
 
-{mapping, "auth.redis.cafile", "emqx_auth_redis.options", [
+{mapping, "auth.redis.cafile", "emqx_auth_aliyun_iot.options", [
   {default, ""},
   {datatype, string}
 ]}.
 
-{mapping, "auth.redis.certfile", "emqx_auth_redis.options", [
+{mapping, "auth.redis.certfile", "emqx_auth_aliyun_iot.options", [
   {default, ""},
   {datatype, string}
 ]}.
 
-{mapping, "auth.redis.keyfile", "emqx_auth_redis.options", [
+{mapping, "auth.redis.keyfile", "emqx_auth_aliyun_iot.options", [
   {default, ""},
   {datatype, string}
 ]}.
 
-{translation, "emqx_auth_redis.options", fun(Conf) ->
+{translation, "emqx_auth_aliyun_iot.options", fun(Conf) ->
    Ssl = cuttlefish:conf_get("auth.redis.ssl", Conf, false),
    case Ssl of
        true ->
@@ -67,7 +67,7 @@
    end
 end}.
 
-{translation, "emqx_auth_redis.server", fun(Conf) ->
+{translation, "emqx_auth_aliyun_iot.server", fun(Conf) ->
   Fun = fun(S) ->
     case string:split(S, ":", trailing) of
       [Domain]       -> {Domain, 6379};
@@ -96,12 +96,12 @@ end}.
    {sentinel, Sentinel}] ++ Server
 end}.
 
-{mapping, "auth.redis.query_timeout", "emqx_auth_redis.query_timeout", [
+{mapping, "auth.redis.query_timeout", "emqx_auth_aliyun_iot.query_timeout", [
   {default, ""},
   {datatype, string}
 ]}.
 
-{translation, "emqx_auth_redis.query_timeout", fun(Conf) ->
+{translation, "emqx_auth_aliyun_iot.query_timeout", fun(Conf) ->
   case cuttlefish:conf_get("auth.redis.query_timeout", Conf) of
       "" -> infinity;
       Duration ->
@@ -112,23 +112,23 @@ end}.
   end
 end}.
 
-{mapping, "auth.redis.auth_cmd", "emqx_auth_redis.auth_cmd", [
+{mapping, "auth.redis.auth_cmd", "emqx_auth_aliyun_iot.auth_cmd", [
   {datatype, string}
 ]}.
 
-{mapping, "auth.redis.password_hash", "emqx_auth_redis.password_hash", [
+{mapping, "auth.redis.password_hash", "emqx_auth_aliyun_iot.password_hash", [
   {datatype, string}
 ]}.
 
-{mapping, "auth.redis.super_cmd", "emqx_auth_redis.super_cmd", [
+{mapping, "auth.redis.super_cmd", "emqx_auth_aliyun_iot.super_cmd", [
   {datatype, string}
 ]}.
 
-{mapping, "auth.redis.acl_cmd", "emqx_auth_redis.acl_cmd", [
+{mapping, "auth.redis.acl_cmd", "emqx_auth_aliyun_iot.acl_cmd", [
   {datatype, string}
 ]}.
 
-{translation, "emqx_auth_redis.password_hash", fun(Conf) ->
+{translation, "emqx_auth_aliyun_iot.password_hash", fun(Conf) ->
   HashValue = cuttlefish:conf_get("auth.redis.password_hash", Conf),
   case string:tokens(HashValue, ",") of
     [Hash]           -> list_to_atom(Hash);

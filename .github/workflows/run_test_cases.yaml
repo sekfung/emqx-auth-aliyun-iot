@@ -36,7 +36,7 @@ jobs:
                 docker network create --driver bridge --ipv6 --subnet fd15:555::/64  tests_emqx_bridge --attachable;
                 docker-compose -f ./.ci/docker-compose.yml -p tests up -d
                 ipv6_address=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.GlobalIPv6Address}}{{end}}' $(docker ps -a -f name=tests_redis_server_1 -q))
-                sed -i "/auth.redis.server/c auth.redis.server = $ipv6_address:6379" ./etc/emqx_auth_redis.conf
+                sed -i "/auth.redis.server/c auth.redis.server = $ipv6_address:6379" ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tcp' && matrix.network_type == 'ipv4' && matrix.node_type == 'single'
               env:
@@ -44,7 +44,7 @@ jobs:
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose.yml -p tests up -d
-                sed -i '/auth.redis.server/c auth.redis.server = redis_server:6379' ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.server/c auth.redis.server = redis_server:6379' ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tls' && matrix.network_type == 'ipv6' && matrix.redis_tag == '6.0.9' && matrix.node_type == 'single'
               run: |
@@ -52,23 +52,23 @@ jobs:
                 docker network create --driver bridge --ipv6 --subnet fd15:555::/64  tests_emqx_bridge --attachable;
                 docker-compose -f ./.ci/docker-compose-tls.yml -p tests up -d
                 ipv6_address=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.GlobalIPv6Address}}{{end}}' $(docker ps -a -f name=tests_redis_server_1 -q))
-                sed -i "/auth.redis.server/c auth.redis.server = $ipv6_address:6380" ./etc/emqx_auth_redis.conf
-                echo '\n' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.cafile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.certfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.keyfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_redis.conf
+                sed -i "/auth.redis.server/c auth.redis.server = $ipv6_address:6380" ./etc/emqx_auth_aliyun_iot.conf
+                echo '\n' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.cafile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.certfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.keyfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tls' && matrix.network_type == 'ipv4' && matrix.redis_tag == '6.0.9' && matrix.node_type == 'single'
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-tls.yml -p tests up -d
-                sed -i '/auth.redis.server/c auth.redis.server = redis_server:6380' ./etc/emqx_auth_redis.conf
-                echo '\n' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.cafile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.certfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.keyfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.server/c auth.redis.server = redis_server:6380' ./etc/emqx_auth_aliyun_iot.conf
+                echo '\n' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.cafile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.certfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.keyfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tcp' && matrix.network_type == 'ipv4' && matrix.node_type == 'cluster'
               env:
@@ -76,8 +76,8 @@ jobs:
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-cluster.yml -p tests up -d
-                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_redis.conf
-                sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:7000,172.16.239.10:7001,172.16.239.10:7002' ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_aliyun_iot.conf
+                sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:7000,172.16.239.10:7001,172.16.239.10:7002' ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tcp' && matrix.network_type == 'ipv6' && matrix.node_type == 'cluster'
               env:
@@ -85,39 +85,39 @@ jobs:
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-cluster.yml -p tests up -d
-                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_redis.conf
-                sed -i '/auth.redis.server/c auth.redis.server = 2001:3200:3200::20:7000,2001:3200:3200::20:7001,2001:3200:3200::20:7002' ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_aliyun_iot.conf
+                sed -i '/auth.redis.server/c auth.redis.server = 2001:3200:3200::20:7000,2001:3200:3200::20:7001,2001:3200:3200::20:7002' ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tls' && matrix.network_type == 'ipv4' && matrix.redis_tag == '6.0.9' && matrix.node_type == 'cluster'
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-cluster-tls.yml -p tests up -d
-                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_redis.conf
-                sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:8000,172.16.239.10:8001,172.16.239.10:8002' ./etc/emqx_auth_redis.conf
-                echo '\n' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.cafile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.certfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.keyfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_aliyun_iot.conf
+                sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:8000,172.16.239.10:8001,172.16.239.10:8002' ./etc/emqx_auth_aliyun_iot.conf
+                echo '\n' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.cafile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.certfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.keyfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_aliyun_iot.conf
             - name: setup
               if: matrix.connect_type == 'tls' && matrix.network_type == 'ipv6' && matrix.redis_tag == '6.0.9' && matrix.node_type == 'cluster'
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-cluster-tls.yml -p tests up -d
-                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_redis.conf
-                sed -i '/auth.redis.server/c auth.redis.server = 2001:3200:3200::20:8000,2001:3200:3200::20:8001,2001:3200:3200::20:8002' ./etc/emqx_auth_redis.conf
-                echo '\n' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.cafile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.certfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_redis.conf
-                echo 'auth.redis.keyfile = /emqx_auth_redis/test/emqx_auth_redis_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_redis.conf
+                sed -i '/auth.redis.type/c auth.redis.type = cluster' ./etc/emqx_auth_aliyun_iot.conf
+                sed -i '/auth.redis.server/c auth.redis.server = 2001:3200:3200::20:8000,2001:3200:3200::20:8001,2001:3200:3200::20:8002' ./etc/emqx_auth_aliyun_iot.conf
+                echo '\n' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.ssl = on' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.cafile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/ca.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.certfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.crt' >> ./etc/emqx_auth_aliyun_iot.conf
+                echo 'auth.redis.keyfile = /emqx_auth_aliyun_iot/test/emqx_auth_aliyun_iot_SUITE_data/certs/redis.key' >> ./etc/emqx_auth_aliyun_iot.conf
             - name: run test cases
               if: matrix.connect_type == 'tcp' || (matrix.connect_type == 'tls' &&  matrix.redis_tag == '6.0.9')
               run: |
-                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis xref"
-                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis eunit"
-                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis ct"
-                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis cover"
+                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_aliyun_iot xref"
+                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_aliyun_iot eunit"
+                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_aliyun_iot ct"
+                docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_aliyun_iot cover"
             - uses: actions/upload-artifact@v1
               if: failure()
               with:
