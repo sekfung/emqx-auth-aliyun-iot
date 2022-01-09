@@ -13,13 +13,9 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 %%--------------------------------------------------------------------
--emqx_plugin(?MODULE).
 -module(emqx_auth_aliyun_iot).
 
 -include("emqx_auth_aliyun_iot.hrl").
-
--include_lib("emqx/include/emqx.hrl").
--include_lib("emqx/include/logger.hrl").
 
 -export([ register_metrics/0
         , check/3
@@ -47,7 +43,7 @@ check(ClientInfo = #{password := Password}, AuthResult,
                     {ok, [PassHash, Salt|_]} ->
                         check_pass({PassHash, Salt, Password}, HashType);
                     {error, Reason} ->
-                        ?LOG(error, "[Redis] Command: ~p failed: ~p", [AuthCmd, Reason]),
+                        logger:info(error, "[Redis] Command: ~p failed: ~p", [AuthCmd, Reason]),
                         {error, not_found}
                 end,
     case CheckPass of
@@ -61,7 +57,7 @@ check(ClientInfo = #{password := Password}, AuthResult,
             ok = emqx_metrics:inc(?AUTH_METRICS(ignore));
         {error, ResultCode} ->
             ok = emqx_metrics:inc(?AUTH_METRICS(failure)),
-            ?LOG(error, "[Redis] Auth from redis failed: ~p", [ResultCode]),
+            logger:info(error, "[Redis] Auth from redis failed: ~p", [ResultCode]),
             {stop, AuthResult#{auth_result => ResultCode, anonymous => false}}
     end.
 

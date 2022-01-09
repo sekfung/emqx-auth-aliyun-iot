@@ -20,9 +20,6 @@
 
 -include("emqx_auth_aliyun_iot.hrl").
 
--include_lib("emqx/include/emqx.hrl").
--include_lib("emqx/include/logger.hrl").
-
 -import(proplists, [get_value/2, get_value/3]).
 
 -export([ connect/1
