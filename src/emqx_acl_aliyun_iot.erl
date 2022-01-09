@@ -46,7 +46,7 @@ do_check_acl(ClientInfo, PubSub, Topic, _AclResult,
                 nomatch -> {stop, deny}
             end;
         {error, Reason} ->
-            ?LOG(error, "[Redis] do_check_acl error: ~p", [Reason]),
+            logger:error("[Redis] do_check_acl error: ~p", [Reason]),
             ok
     end.
 

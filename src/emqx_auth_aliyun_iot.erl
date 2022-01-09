@@ -43,7 +43,7 @@ check(ClientInfo = #{password := Password}, AuthResult,
                     {ok, [PassHash, Salt|_]} ->
                         check_pass({PassHash, Salt, Password}, HashType);
                     {error, Reason} ->
-                        logger:info(error, "[Redis] Command: ~p failed: ~p", [AuthCmd, Reason]),
+                        logger:error("[Redis] Command: ~p failed: ~p", [AuthCmd, Reason]),
                         {error, not_found}
                 end,
     case CheckPass of
@@ -57,7 +57,7 @@ check(ClientInfo = #{password := Password}, AuthResult,
             ok = emqx_metrics:inc(?AUTH_METRICS(ignore));
         {error, ResultCode} ->
             ok = emqx_metrics:inc(?AUTH_METRICS(failure)),
-            logger:info(error, "[Redis] Auth from redis failed: ~p", [ResultCode]),
+            logger:error("[Redis] Auth from redis failed: ~p", [ResultCode]),
             {stop, AuthResult#{auth_result => ResultCode, anonymous => false}}
     end.
 
