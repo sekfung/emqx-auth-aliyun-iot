@@ -13,7 +13,7 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 %%--------------------------------------------------------------------
-
+-emqx_plugin(?MODULE).
 -module(emqx_auth_aliyun_iot).
 
 -include("emqx_auth_aliyun_iot.hrl").
