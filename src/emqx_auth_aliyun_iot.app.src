@@ -3,7 +3,7 @@
   {vsn, "git"},
   {modules, []},
   {registered, [emqx_auth_aliyun_iot_sup]},
-  {applications, [kernel,stdlib,eredis,eredis_cluster,ecpool,emqx_passwd]},
+  {applications, [kernel,stdlib,eredis,eredis_cluster,ecpool]},
   {mod, {emqx_auth_aliyun_iot_app, []}},
   {env, []},
   {licenses, ["Apache-2.0"]},
