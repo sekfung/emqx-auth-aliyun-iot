@@ -17,7 +17,8 @@ gen_password(ClientId, UserName, DeviceSecret) ->
   try
     {ok, ParamMap} = check_and_split_param(ClientId, UserName, DeviceSecret),
     {ok, StrToSign} = build_str_to_sign(ParamMap),
-    sign(ParamMap, DeviceSecret, StrToSign)
+    {ok, Password} = sign(ParamMap, DeviceSecret, StrToSign),
+    Password
   catch
     error:{badmatch, Error} -> Error;
     error:_ -> {error, invalid_param}
