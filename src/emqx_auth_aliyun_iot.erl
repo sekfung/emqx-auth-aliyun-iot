@@ -26,10 +26,9 @@
 register_metrics() ->
     lists:foreach(fun emqx_metrics:ensure/1, ?AUTH_METRICS).
 
-check(ClientInfo = #{password := Password}, AuthResult,
+check(ClientInfo, AuthResult,
       #{auth_cmd  := AuthCmd,
         super_cmd := SuperCmd,
-        hash_type := HashType,
         timeout   := Timeout,
         type      := Type,
         pool      := Pool}) ->

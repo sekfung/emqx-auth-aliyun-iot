@@ -39,12 +39,10 @@ stop(_State) ->
 
 load_auth_hook(AuthCmd) ->
     SuperCmd = application:get_env(?APP, super_cmd, undefined),
-    {ok, HashType} = application:get_env(?APP, password_hash),
     {ok, Timeout} = application:get_env(?APP, query_timeout),
     Type = proplists:get_value(type, application:get_env(?APP, server, [])),
     Config = #{auth_cmd => AuthCmd,
                super_cmd => SuperCmd,
-               hash_type => HashType,
                timeout => Timeout,
                type => Type,
                pool => ?APP},
