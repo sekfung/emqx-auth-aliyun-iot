@@ -1,5 +1,5 @@
 {application, emqx_auth_aliyun_iot,
- [{description, "EMQ X Authentication/ACL with Redis"},
+ [{description, "EMQ X Authentication With Aliyun IoT Protocol"},
   {vsn, "git"},
   {modules, []},
   {registered, [emqx_auth_aliyun_iot_sup]},
@@ -7,8 +7,8 @@
   {mod, {emqx_auth_aliyun_iot_app, []}},
   {env, []},
   {licenses, ["Apache-2.0"]},
-  {maintainers, ["EMQ X Team <contact@emqx.io>"]},
-  {links, [{"Homepage", "https://emqx.io/"},
-           {"Github", "https://github.com/emqx/emqx-auth-redis"}
+  {maintainers, ["sekfung.lau@gmail.com"]},
+  {links, [{"Homepage", "https://iot.excelsecu.com"},
+           {"Github", "https://github.com/sekfung/emqx-auth-aliyun-iot"}
           ]}
  ]}.

@@ -34,15 +34,13 @@ check(ClientInfo = #{password := Password}, AuthResult,
         type      := Type,
         pool      := Pool}) ->
     CheckPass = case emqx_auth_aliyun_iot_cli:q(Pool, Type, AuthCmd, ClientInfo, Timeout) of
-                    {ok, PassHash} when is_binary(PassHash) ->
-                        check_pass({PassHash, Password}, HashType);
-                    {ok, [undefined|_]} ->
-                        {error, not_found};
-                    {ok, [PassHash]} ->
-                        check_pass({PassHash, Password}, HashType);
-                    {ok, [PassHash, Salt|_]} ->
-                        check_pass({PassHash, Salt, Password}, HashType);
-                    {error, Reason} ->
+                  {ok, DeviceSecret} when is_binary(DeviceSecret) ->
+                    check_pass(DeviceSecret, ClientInfo);
+                  {ok, [undefined | _]} ->
+                    {error, not_found};
+                  {ok, [DeviceSecret]} ->
+                    check_pass(DeviceSecret, ClientInfo);
+                  {error, Reason} ->
                         logger:error("[Redis] Command: ~p failed: ~p", [AuthCmd, Reason]),
                         {error, not_found}
                 end,
@@ -73,9 +71,14 @@ is_superuser(Pool, Type, SuperCmd, ClientInfo, Timeout) ->
         {error, _Error} -> false
     end.
 
-check_pass(Password, HashType) ->
-    case emqx_passwd:check_pass(Password, HashType) of
-        ok -> ok;
-        {error, _Reason} -> {error, not_authorized}
-    end.
+check_pass(DeviceSecret, #{clientid := ClientId, username := Username, password := Password}) ->
+  PasswordResult = emqx_auth_aliyun_iot_util:gen_password(to_str(ClientId), to_str(Username), to_str(DeviceSecret)),
+  case string:to_lower(to_str(Password)) =:= string:to_lower(PasswordResult) of
+    true -> ok;
+    false -> {error, not_authorized}
+  end.
+
+-spec to_str(binary()) -> string().
+to_str(Param) ->
+  lists:flatten(binary_to_list(Param)).
 
