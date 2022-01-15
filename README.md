@@ -1,7 +1,7 @@
 emqx_auth_aliyun_iot
 ===============
 
-EMQ X Redis Authentication/ACL Plugin
+EMQ X AliYun IoT Authentication Plugin
 
 Features
 ---------
@@ -65,25 +65,7 @@ auth.redis.database = 0
 ##  - HGET mqtt_user:%u password
 ##  - HMGET mqtt_user:%u password
 ##  - HMGET mqtt_user:%u password salt
-auth.redis.auth_cmd = HMGET mqtt_user:%u password
-
-## Password hash.
-##
-## Value: plain | md5 | sha | sha256 | bcrypt
-auth.redis.password_hash = plain
-
-## sha256 with salt prefix
-## auth.redis.password_hash = salt,sha256
-
-## sha256 with salt suffix
-## auth.redis.password_hash = sha256,salt
-
-## bcrypt with salt prefix
-## auth.redis.password_hash = salt,bcrypt
-
-## pbkdf2 with macfun iterations dklen
-## macfun: md4, md5, ripemd160, sha, sha224, sha256, sha384, sha512
-## auth.redis.password_hash = pbkdf2,sha256,1000,20
+auth.redis.auth_cmd = HMGET mqtt_user:%u device_secret
 
 ## Superuser query command.
 ##
@@ -122,13 +104,13 @@ Set a 'user' hash with 'password' 'salt' field, for example:
 HMSET mqtt_user:<username> password "password" salt "salt"
 ```
 
-User Set with Password
+User Set with Device Secret
 -----------------------
 
-Set a 'user' Set with 'password' field for example:
+Set a 'user' Set with 'device_secret' field for example:
 
 ```
-HSET mqtt_user:<username> password "password"
+HSET mqtt_user:<username> device_secret "device_secret"
 ```
 
 ACL Rule Hash
