@@ -33,7 +33,7 @@ start(_StartType, _StartArgs) ->
 
 stop(_State) ->
     emqx:unhook('client.authenticate', fun emqx_auth_aliyun_iot:check/3),
-    emqx:unhook('client.check_acl', fun emqx_acl_redis:check_acl/5),
+    emqx:unhook('client.check_acl', fun emqx_acl_aliyun_iot:check_acl/5),
     %% Ensure stop cluster pool if the server type is cluster
     eredis_cluster:stop_pool(?APP).
 
@@ -56,8 +56,8 @@ load_acl_hook(AclCmd) ->
                timeout => Timeout,
                type => Type,
                pool => ?APP},
-    ok = emqx_acl_redis:register_metrics(),
-    emqx:hook('client.check_acl', fun emqx_acl_redis:check_acl/5, [Config]).
+    ok = emqx_acl_aliyun_iot:register_metrics(),
+    emqx:hook('client.check_acl', fun emqx_acl_aliyun_iot:check_acl/5, [Config]).
 
 if_cmd_enabled(Par, Fun) ->
     case application:get_env(?APP, Par) of
