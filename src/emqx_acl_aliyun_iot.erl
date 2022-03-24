@@ -18,25 +18,14 @@
 
 -include("emqx_auth_aliyun_iot.hrl").
 
--export([ register_metrics/0
-        , check_acl/5
+-export([ check_acl/5
         , description/0
         ]).
 
--spec(register_metrics() -> ok).
-register_metrics() ->
-    lists:foreach(fun emqx_metrics:ensure/1, ?ACL_METRICS).
 
-check_acl(ClientInfo, PubSub, Topic, AclResult, Config) ->
-    case do_check_acl(ClientInfo, PubSub, Topic, AclResult, Config) of
-        ok -> emqx_metrics:inc(?ACL_METRICS(ignore)), ok;
-        {stop, allow} -> emqx_metrics:inc(?ACL_METRICS(allow)), {stop, allow};
-        {stop, deny} -> emqx_metrics:inc(?ACL_METRICS(deny)), {stop, deny}
-    end.
-
-do_check_acl(#{username := <<$$, _/binary>>}, _PubSub, _Topic, _AclResult, _Config) ->
+check_acl(#{username := <<$$, _/binary>>}, _PubSub, _Topic, _AclResult, _Config) ->
     ok;
-do_check_acl(ClientInfo, PubSub, Topic, _AclResult,
+check_acl(ClientInfo, PubSub, Topic, _AclResult,
              #{acl_cmd := AclCmd, timeout := Timeout, type := Type, pool := Pool}) ->
     case emqx_auth_aliyun_iot_cli:q(Pool, Type, AclCmd, ClientInfo, Timeout) of
         {ok, []} -> ok;
